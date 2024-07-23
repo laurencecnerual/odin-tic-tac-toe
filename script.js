@@ -1,21 +1,34 @@
 const gameBoard = (function () {
     const tttSize = 3;
-    const board = [];
+    let board;
 
-    for (let x = 0; x < tttSize; x++) {
-        board[x] = [];
-        for (let y = 0; y < tttSize; y++) {
-            board[x][y] = "";
+    const cleanBoard = () => {
+        board = [];
+        for (let x = 0; x < tttSize; x++) {
+            board[x] = [];
+            for (let y = 0; y < tttSize; y++) {
+                board[x][y] = " ";
+            }
         }
     }
 
+    cleanBoard();
+
     const fillCell = (x, y, value) => {
-        if (board[x][y] == "") {
+        if (board[x][y] == " ") {
             board[x][y] = value;
         }
     }
 
-    return {board, fillCell};
+    const getBoard = () => {
+        return board;
+    }
+
+    const logBoard = () => {
+        console.log(board[0] + "\n" + board[1] + "\n" + board[2]);
+    }
+
+    return {getBoard, cleanBoard, fillCell, logBoard};
 })();
 
 function createPlayer(name, team) {
@@ -34,4 +47,5 @@ gameBoard.fillCell(2,2,player1.getTeam());
 gameBoard.fillCell(1,1,player2.getTeam());
 gameBoard.fillCell(0,0,player1.getTeam());
 
-console.log(player1, player2, gameBoard.board);
+console.log(player1, player2);
+gameBoard.logBoard();
