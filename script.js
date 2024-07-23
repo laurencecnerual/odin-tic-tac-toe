@@ -29,7 +29,7 @@ const gameMaster = (function () {
         }
 
         const logBoard = () => {
-            console.log(board[0] + "\n" + board[1] + "\n" + board[2]);
+            console.log(board[0] + "\n" + board[1] + "\n" + board[2] + "\n");
         }
 
         return {getBoard, cleanBoard, fillCell, logBoard};
@@ -57,13 +57,28 @@ const gameMaster = (function () {
     }
     
     const activePlayerIndex = determineActivePlayerIndex();
-    console.log(activePlayerIndex());
-    console.log(activePlayerIndex());
-    console.log(activePlayerIndex());
-    console.log(activePlayerIndex());
+    let gameOver = false;
 
-    gameBoard.fillCell(2,2,players[0].getTeam());
-    gameBoard.fillCell(1,1,players[1].getTeam());
-    gameBoard.fillCell(0,0,players[0].getTeam());
-    gameBoard.logBoard();
+    function getGameOver(board, token) {
+        // for (let x = 0; x < board.length; x++) {
+        //     if (board[x][0] == board[x][1] == board[x][2]) {
+        //         return true;
+        //     }
+        // }
+
+        // for (let y = 0; y < board.length; y++) {
+        //     if (board[0][y] == board[1][y] == board[2][y]) {
+        //         return true;
+        //     }
+        // }
+    }
+
+    for (let x = 0; x < 3; x++) {
+        for (let y = 0; y < 3; y++) {
+            let gamePiece = players[activePlayerIndex()].getTeam();
+            gameBoard.fillCell(x, y, gamePiece);
+            gameBoard.logBoard();
+            gameOver = getGameOver(gameBoard.getBoard(), gamePiece);
+        }
+    }
 })();
