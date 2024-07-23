@@ -41,11 +41,11 @@ function createPlayer(name, team) {
     return {getName, getTeam, getScore, incrementScore};
 }
 
-const player1 = createPlayer("Player 1", "X");
-const player2 = createPlayer("Player 2", "O");
-gameBoard.fillCell(2,2,player1.getTeam());
-gameBoard.fillCell(1,1,player2.getTeam());
-gameBoard.fillCell(0,0,player1.getTeam());
+const players = [];
+players.push(createPlayer("Player 1", "X"));
+players.push(createPlayer("Player 2", "O"));
 
-console.log(player1, player2);
+gameBoard.fillCell(2,2,players[0].getTeam());
+gameBoard.fillCell(1,1,players[1].getTeam());
+gameBoard.fillCell(0,0,players[0].getTeam());
 gameBoard.logBoard();
