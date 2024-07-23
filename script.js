@@ -19,17 +19,19 @@ const gameBoard = (function () {
 })();
 
 function createPlayer(name, team) {
+    const getName = () => name;
+    const getTeam = () => team;
     let score = 0;
     const getScore = () => score;
     const incrementScore = () => score++;
 
-    return {name, team, getScore, incrementScore};
+    return {getName, getTeam, getScore, incrementScore};
 }
 
 const player1 = createPlayer("Player 1", "X");
 const player2 = createPlayer("Player 2", "O");
-gameBoard.fillCell(2,2,player1.team);
-gameBoard.fillCell(1,1,player2.team);
-gameBoard.fillCell(0,0,player1.team);
+gameBoard.fillCell(2,2,player1.getTeam());
+gameBoard.fillCell(1,1,player2.getTeam());
+gameBoard.fillCell(0,0,player1.getTeam());
 
 console.log(player1, player2, gameBoard.board);
