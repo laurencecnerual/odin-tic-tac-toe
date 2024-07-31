@@ -40,7 +40,7 @@ const gameMaster = (function () {
         }
 
         const logBoard = () => {
-            console.log(board[0] + "\n" + board[1] + "\n" + board[2] + "\n");
+            alert(board[0] + "\n" + board[1] + "\n" + board[2] + "\n");
         }
 
         return {getBoard, getMaxCells, getCellsFilled, cleanBoard, fillCell, logBoard};
@@ -68,7 +68,7 @@ const gameMaster = (function () {
     }
     
     const activePlayerIndex = determineActivePlayerIndex();
-    let gameOver = false;
+    let gameOver = 0;
 
     function getGameOver(token, x, y) {
         const board = gameBoard.getBoard();
@@ -91,26 +91,46 @@ const gameMaster = (function () {
         }
 
         if (columnCompleted || rowCompleted || positiveDiagonalCompleted || negativeDiagonalCompleted) {
-            return true;
+            return 2; //the current player won the game
         } else if (boardFull) {
-            return true;
+            return 1; //the board is full but nobody won, so it's a draw
         } else {
-            return false;
+            return 0; //the board is not full and nobody has won yet, so the match is still ongoing
         }
     }
 
-    for (let x = 0; x < 3; x++) {
-        for (let y = 0; y < 3; y++) {
-            let gamePiece = players[activePlayerIndex()].getTeam();
-            //console.log(gameBoard.getCellsFilled(), gameBoard.getMaxCells());
-            let fillCoordinates = gameBoard.fillCell(x, y, gamePiece);
-            gameBoard.logBoard();
+    // for (let x = 0; x < 3; x++) {
+    //     for (let y = 0; y < 3; y++) {
+    //         let gamePiece = players[activePlayerIndex()].getTeam();
+    //         let fillCoordinates = gameBoard.fillCell(x, y, gamePiece);
+    //         gameBoard.logBoard();
 
-            if (fillCoordinates != undefined) {
-                gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
-                //console.log(fillCoordinates);
-                console.log(gameOver);
-            }
+    //         if (fillCoordinates != undefined) {
+    //             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
+    //             console.log(gameOver);
+    //         }
+    //     }
+    // }
+
+    let gamePiece;
+
+    while (gameOver == 0) {
+        gamePiece = players[activePlayerIndex()].getTeam();
+        alert("Player " + gamePiece + "'s turn");
+        let fillCoordinates = gameBoard.fillCell(parseInt(prompt("Input X")), parseInt(prompt("Input Y")), gamePiece);
+        gameBoard.logBoard();
+
+        if (fillCoordinates != undefined) {
+            gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
         }
     }
+
+    //alert("Reached exit status " + gameOver);
+    
+    if (gameOver == 2) {
+        alert("Player " + gamePiece + " wins!");
+    } else {
+        alert("It's a draw!");
+    }
+
 })();
