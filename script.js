@@ -2,6 +2,7 @@ const gameMaster = (function () {
     const gameBoard = (function () {
         const tttSize = 3;
         let board;
+        let cellsFilled;
 
         const cleanBoard = () => {
             board = [];
@@ -11,6 +12,7 @@ const gameMaster = (function () {
                     board[x][y] = " ";
                 }
             }
+            cellsFilled = 0;
         }
 
         cleanBoard();
@@ -18,6 +20,7 @@ const gameMaster = (function () {
         const fillCell = (x, y, value) => {
             if (board[x][y] == " ") {
                 board[x][y] = value;
+                cellsFilled++;
                 return true; //succeeded in filling cell because it was empty
             } else {
                 return false; //failed to fill cell because it was already full
@@ -28,11 +31,19 @@ const gameMaster = (function () {
             return board;
         }
 
+        const getMaxCells = () => {
+            return tttSize ** 2;
+        }
+
+        const getCellsFilled = () => {
+            return cellsFilled;
+        }
+
         const logBoard = () => {
             console.log(board[0] + "\n" + board[1] + "\n" + board[2] + "\n");
         }
 
-        return {getBoard, cleanBoard, fillCell, logBoard};
+        return {getBoard, getMaxCells, getCellsFilled, cleanBoard, fillCell, logBoard};
     })();
 
     function createPlayer(name, team) {
@@ -76,6 +87,7 @@ const gameMaster = (function () {
     for (let x = 0; x < 3; x++) {
         for (let y = 0; y < 3; y++) {
             let gamePiece = players[activePlayerIndex()].getTeam();
+            //console.log(gameBoard.getCellsFilled(), gameBoard.getMaxCells());
             gameBoard.fillCell(x, y, gamePiece);
             gameBoard.logBoard();
             gameOver = getGameOver(gameBoard.getBoard(), gamePiece);
