@@ -21,9 +21,9 @@ const gameMaster = (function () {
             if (board[x][y] == " ") {
                 board[x][y] = value;
                 cellsFilled++;
-                return true; //succeeded in filling cell because it was empty
+                return {x, y}; //succeeded in filling cell because it was empty
             } else {
-                return false; //failed to fill cell because it was already full
+                return undefined; //failed to fill cell because it was already full
             }
         }
 
@@ -70,27 +70,47 @@ const gameMaster = (function () {
     const activePlayerIndex = determineActivePlayerIndex();
     let gameOver = false;
 
-    function getGameOver(board, token) {
-        // for (let x = 0; x < board.length; x++) {
-        //     if (board[x][0] == board[x][1] == board[x][2]) {
-        //         return true;
-        //     }
-        // }
+    function getGameOver(token, x, y) {
+        const board = gameBoard.getBoard();
 
-        // for (let y = 0; y < board.length; y++) {
-        //     if (board[0][y] == board[1][y] == board[2][y]) {
-        //         return true;
-        //     }
-        // }
+        let columnCompleted = ((board[x][0] == board[x][1]) && (board[x][1] == board[x][2]));
+        let rowCompleted = ((board[0][y] == board[1][y]) && (board[1][y] == board[2][y]));
+        let positiveDiagonalCompleted = false;
+        let negativeDiagonalCompleted = false;
+        let boardFull = (gameBoard.getCellsFilled() == gameBoard.getMaxCells());
+
+        let onPositiveDiagonal =  (x + y == 2);
+        let onNegativeDiagonal = (x == y);
+
+        if (onPositiveDiagonal) {
+            positiveDiagonalCompleted = ((board[0][2] == board[1][1]) && (board[1][1] == board[2][0]));
+        }
+
+        if (onNegativeDiagonal) {
+            negativeDiagonalCompleted = ((board[0][0] == board[1][1]) && (board[1][1] == board[2][2]));
+        }
+
+        if (columnCompleted || rowCompleted || positiveDiagonalCompleted || negativeDiagonalCompleted) {
+            return true;
+        } else if (boardFull) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     for (let x = 0; x < 3; x++) {
         for (let y = 0; y < 3; y++) {
             let gamePiece = players[activePlayerIndex()].getTeam();
             //console.log(gameBoard.getCellsFilled(), gameBoard.getMaxCells());
-            gameBoard.fillCell(x, y, gamePiece);
+            let fillCoordinates = gameBoard.fillCell(x, y, gamePiece);
             gameBoard.logBoard();
-            gameOver = getGameOver(gameBoard.getBoard(), gamePiece);
+
+            if (fillCoordinates != undefined) {
+                gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
+                //console.log(fillCoordinates);
+                console.log(gameOver);
+            }
         }
     }
 })();
