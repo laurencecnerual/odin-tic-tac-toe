@@ -113,6 +113,7 @@ const gameMaster = (function () {
     // }
 
     let gamePiece;
+    let currentPlayer;
 
     function playRound() {
         alert("Player " + gamePiece + "'s turn");
@@ -130,14 +131,15 @@ const gameMaster = (function () {
     }
 
     while (gameOver == 0) {
-        gamePiece = players[activePlayerIndex()].getTeam();
+        let index = activePlayerIndex();
+        currentPlayer = players[index];
+        gamePiece = currentPlayer.getTeam();
         playRound();
     }
 
-    //alert("Reached exit status " + gameOver);
-    
     if (gameOver == 2) {
-        alert("Player " + gamePiece + " wins!");
+        alert(`${currentPlayer.getName()} (${gamePiece} Team) wins!`);
+
     } else {
         alert("It's a draw!");
     }
