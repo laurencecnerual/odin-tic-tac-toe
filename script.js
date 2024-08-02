@@ -57,8 +57,8 @@ const gameMaster = (function () {
     }
 
     const players = [];
-    players.push(createPlayer("Ratchet", "X"));
-    players.push(createPlayer("Clank", "O"));
+    players.push(createPlayer(prompt("Input Player 1 Name", "Mario"), "X"));
+    players.push(createPlayer(prompt("Input Player 2 Name", "Luigi"), "O"));
 
     function displayScores() {
         alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
@@ -105,9 +105,10 @@ const gameMaster = (function () {
 
     let gamePiece;
     let currentPlayer;
+    let currentPlayerName;
 
     function playRound() {
-        alert("Player " + gamePiece + "'s turn");
+        alert(currentPlayerName + "'s turn");
         let row = parseInt(prompt("Input row #0~2"));
         let column = parseInt(prompt("Input column #0~2"));
         let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
@@ -130,12 +131,13 @@ const gameMaster = (function () {
         while (gameOver == 0) {
             let index = activePlayerIndex();
             currentPlayer = players[index];
+            currentPlayerName = currentPlayer.getName();
             gamePiece = currentPlayer.getTeam();
             playRound();
         }
     
         if (gameOver == 2) {
-            alert(`${currentPlayer.getName()} (Team ${gamePiece}) wins!`);
+            alert(`${currentPlayerName} (Team ${gamePiece}) wins!`);
             currentPlayer.incrementScore();
         } else {
             alert("It's a draw!");
