@@ -57,8 +57,12 @@ const gameMaster = (function () {
     }
 
     const players = [];
-    players.push(createPlayer("Player 1", "X"));
-    players.push(createPlayer("Player 2", "O"));
+    players.push(createPlayer("Ratchet", "X"));
+    players.push(createPlayer("Clank", "O"));
+
+    function displayScores() {
+        alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
+    }
     
     function determineActivePlayerIndex() {
         let turnNumber = 0;
@@ -99,19 +103,6 @@ const gameMaster = (function () {
         }
     }
 
-    // for (let x = 0; x < 3; x++) {
-    //     for (let y = 0; y < 3; y++) {
-    //         let gamePiece = players[activePlayerIndex()].getTeam();
-    //         let fillCoordinates = gameBoard.fillCell(x, y, gamePiece);
-    //         gameBoard.logBoard();
-
-    //         if (fillCoordinates != undefined) {
-    //             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
-    //             console.log(gameOver);
-    //         }
-    //     }
-    // }
-
     let gamePiece;
     let currentPlayer;
 
@@ -138,10 +129,11 @@ const gameMaster = (function () {
     }
 
     if (gameOver == 2) {
-        alert(`${currentPlayer.getName()} (${gamePiece} Team) wins!`);
-
+        alert(`${currentPlayer.getName()} (Team ${gamePiece}) wins!`);
+        currentPlayer.incrementScore();
     } else {
         alert("It's a draw!");
     }
 
+    displayScores();
 })();
