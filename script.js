@@ -121,19 +121,35 @@ const gameMaster = (function () {
         }
     }
 
-    while (gameOver == 0) {
-        let index = activePlayerIndex();
-        currentPlayer = players[index];
-        gamePiece = currentPlayer.getTeam();
-        playRound();
+    function cleanUp() {
+        gameOver = 0;
+        gameBoard.cleanBoard();
     }
 
-    if (gameOver == 2) {
-        alert(`${currentPlayer.getName()} (Team ${gamePiece}) wins!`);
-        currentPlayer.incrementScore();
-    } else {
-        alert("It's a draw!");
+    function playGame() {
+        while (gameOver == 0) {
+            let index = activePlayerIndex();
+            currentPlayer = players[index];
+            gamePiece = currentPlayer.getTeam();
+            playRound();
+        }
+    
+        if (gameOver == 2) {
+            alert(`${currentPlayer.getName()} (Team ${gamePiece}) wins!`);
+            currentPlayer.incrementScore();
+        } else {
+            alert("It's a draw!");
+        }
+    
+        displayScores();
+
+        if (window.confirm("Would you like to play again?")) {
+            cleanUp();
+            playGame();
+        } else {
+            alert("Thank you for playing!");
+        }
     }
 
-    displayScores();
+    playGame();
 })();
