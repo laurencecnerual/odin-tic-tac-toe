@@ -114,15 +114,24 @@ const gameMaster = (function () {
 
     let gamePiece;
 
-    while (gameOver == 0) {
-        gamePiece = players[activePlayerIndex()].getTeam();
+    function playRound() {
         alert("Player " + gamePiece + "'s turn");
-        let fillCoordinates = gameBoard.fillCell(parseInt(prompt("Input X")), parseInt(prompt("Input Y")), gamePiece);
-        gameBoard.logBoard();
+        let row = parseInt(prompt("Input row #0~2"));
+        let column = parseInt(prompt("Input column #0~2"));
+        let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
 
         if (fillCoordinates != undefined) {
+            gameBoard.logBoard();
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
+        } else {
+            alert("That cell is taken. Please try again.");
+            playRound();
         }
+    }
+
+    while (gameOver == 0) {
+        gamePiece = players[activePlayerIndex()].getTeam();
+        playRound();
     }
 
     //alert("Reached exit status " + gameOver);
