@@ -9,7 +9,7 @@ const gameMaster = (function () {
             for (let x = 0; x < tttSize; x++) {
                 board[x] = [];
                 for (let y = 0; y < tttSize; y++) {
-                    board[x][y] = " ";
+                    board[x][y] = "";
                 }
             }
             cellsFilled = 0;
@@ -18,7 +18,7 @@ const gameMaster = (function () {
         cleanBoard();
 
         const fillCell = (x, y, value) => {
-            if (board[x][y] == " ") {
+            if (board[x][y] == "") {
                 board[x][y] = value;
                 cellsFilled++;
                 return {x, y}; //succeeded in filling cell because it was empty
@@ -127,23 +127,30 @@ const gameMaster = (function () {
         }
     }
 
-    let gamePiece;
+    let index;
     let currentPlayer;
     let currentPlayerName;
+    let gamePiece;
+    setPlayerTurn();
 
-    function playRound() {
-        alert(currentPlayerName + "'s turn");
-        let row = parseInt(prompt("Input row #0~2"));
-        let column = parseInt(prompt("Input column #0~2"));
+    const uiBoardCells = Array.from(document.querySelectorAll("button.cell"));
+    uiBoardCells.forEach((cell) => {
+        cell.addEventListener("click", () => {
+            playRound(cell.id[1], cell.id[3]); //send the row and column information from the button's id
+        });
+    });
+
+    function playRound(r, c) {
+        let row = parseInt(r);
+        let column = parseInt(c);
         let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
 
         if (fillCoordinates != undefined) {
-            gameBoard.logBoard(); // needs to be removed later
             displayController.displayBoard();
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
+            setPlayerTurn(); // newly added
         } else {
             alert("That cell is taken. Please try again.");
-            playRound();
         }
     }
 
@@ -152,15 +159,15 @@ const gameMaster = (function () {
         gameBoard.cleanBoard();
     }
 
-    function playGame() {
-        while (gameOver == 0) {
-            let index = activePlayerIndex();
-            currentPlayer = players[index];
-            currentPlayerName = currentPlayer.getName();
-            gamePiece = currentPlayer.getTeam();
-            playRound();
-        }
-    
+    function setPlayerTurn() {
+        index = activePlayerIndex();
+        currentPlayer = players[index];
+        currentPlayerName = currentPlayer.getName();
+        gamePiece = currentPlayer.getTeam();
+        alert(currentPlayerName + "'s turn");
+    }
+
+    function displayResults() {
         if (gameOver == 2) {
             alert(`${currentPlayerName} (Team ${gamePiece}) wins!`);
             currentPlayer.incrementScore();
@@ -169,14 +176,42 @@ const gameMaster = (function () {
         }
     
         displayController.displayScores();
-
-        if (window.confirm("Would you like to play again?")) {
-            cleanUp();
-            playGame();
-        } else {
-            alert("Thank you for playing!");
-        }
     }
+
+    // function promptPlayAgain() {
+    //     if (window.confirm("Would you like to play again?")) {
+    //         cleanUp();
+    //         playGame();
+    //     } else {
+    //         alert("Thank you for playing!");
+    //     }
+    // }
+
+    // function playGame() {
+    //     while (gameOver == 0) {
+    //         let index = activePlayerIndex();
+    //         currentPlayer = players[index];
+    //         currentPlayerName = currentPlayer.getName();
+    //         gamePiece = currentPlayer.getTeam();
+    //         playRound();
+    //     }
+    
+    //     if (gameOver == 2) {
+    //         alert(`${currentPlayerName} (Team ${gamePiece}) wins!`);
+    //         currentPlayer.incrementScore();
+    //     } else {
+    //         alert("It's a draw!");
+    //     }
+    
+    //     displayController.displayScores();
+
+    //     if (window.confirm("Would you like to play again?")) {
+    //         cleanUp();
+    //         playGame();
+    //     } else {
+    //         alert("Thank you for playing!");
+    //     }
+    // }
 
     playGame();
 })();
