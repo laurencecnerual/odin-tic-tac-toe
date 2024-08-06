@@ -57,14 +57,15 @@ const gameMaster = (function () {
             let id = cell.id;
             let activeCell = document.querySelector("#" + id);
             cell.addEventListener("mouseover", () => {
-                if (gameBoard.getCellIsBlank(id[1], id[3])) {
+                if (gameOver == 0 && gameBoard.getCellIsBlank(id[1], id[3])) {
                     activeCell.textContent = gamePiece;
                     activeCell.style.color = "red";
                 }
             });
             cell.addEventListener("mouseout", () => {
-                activeCell.textContent = gameBoard.getCellValue(id[1], id[3]); // //send the row and column information from the button's id
-                activeCell.style.color = "black";
+                if (gameOver == 0) {
+                    activeCell.textContent = gameBoard.getCellValue(id[1], id[3]); // //send the row and column information from the button's id
+                }
             });
         });
 
