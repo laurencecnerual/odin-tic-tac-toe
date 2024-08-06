@@ -121,7 +121,7 @@ const gameMaster = (function () {
     }
     
     const activePlayerIndex = determineActivePlayerIndex();
-    let gameOver = 0;
+    let gameOver = 0; //0 represents a game that is not over
 
     function getGameOver(token, x, y) {
         const board = gameBoard.getBoard();
@@ -161,7 +161,9 @@ const gameMaster = (function () {
     const uiBoardCells = Array.from(document.querySelectorAll("button.cell"));
     uiBoardCells.forEach((cell) => {
         cell.addEventListener("click", () => {
-            playRound(cell.id[1], cell.id[3]); //send the row and column information from the button's id
+            if (gameOver == 0) {
+                playRound(cell.id[1], cell.id[3]); //send the row and column information from the button's id
+            }
         });
     });
 
@@ -173,7 +175,7 @@ const gameMaster = (function () {
         if (fillCoordinates != undefined) {
             displayController.displayBoard(row, column);
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
-            setPlayerTurn(); // newly added
+            setPlayerTurn();
         } else {
             alert("That cell is taken. Please try again.");
         }
