@@ -70,7 +70,18 @@ const gameMaster = (function () {
             document.querySelector("#c2-2").textContent = currentBoard[2][2];
         }
 
-        return {displayNames, displayScores, displayBoard};
+        const displayTurn = (i) => {
+            if (i == 0) {
+                document.querySelector("#p1").style.fontWeight = "bold";
+                document.querySelector("#p2").style.fontWeight = "normal";
+            } else {
+                document.querySelector("#p2").style.fontWeight = "bold";
+                document.querySelector("#p1").style.fontWeight = "normal";
+
+            }
+        }
+
+        return {displayNames, displayScores, displayBoard, displayTurn};
     })();
 
     function createPlayer(name, team) {
@@ -164,7 +175,8 @@ const gameMaster = (function () {
         currentPlayer = players[index];
         currentPlayerName = currentPlayer.getName();
         gamePiece = currentPlayer.getTeam();
-        alert(currentPlayerName + "'s turn");
+        //alert(currentPlayerName + "'s turn");
+        displayController.displayTurn(index);
     }
 
     function displayResults() {
@@ -186,32 +198,4 @@ const gameMaster = (function () {
     //         alert("Thank you for playing!");
     //     }
     // }
-
-    // function playGame() {
-    //     while (gameOver == 0) {
-    //         let index = activePlayerIndex();
-    //         currentPlayer = players[index];
-    //         currentPlayerName = currentPlayer.getName();
-    //         gamePiece = currentPlayer.getTeam();
-    //         playRound();
-    //     }
-    
-    //     if (gameOver == 2) {
-    //         alert(`${currentPlayerName} (Team ${gamePiece}) wins!`);
-    //         currentPlayer.incrementScore();
-    //     } else {
-    //         alert("It's a draw!");
-    //     }
-    
-    //     displayController.displayScores();
-
-    //     if (window.confirm("Would you like to play again?")) {
-    //         cleanUp();
-    //         playGame();
-    //     } else {
-    //         alert("Thank you for playing!");
-    //     }
-    // }
-
-    playGame();
 })();
