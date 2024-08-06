@@ -46,6 +46,15 @@ const gameMaster = (function () {
         return {getBoard, getMaxCells, getCellsFilled, cleanBoard, fillCell, logBoard};
     })();
 
+    const displayController = (function () {
+        const displayNames = () => {
+            document.querySelector("#p1 > .player-name").textContent = players[0].getName();
+            document.querySelector("#p2 > .player-name").textContent = players[1].getName();
+        }
+
+        return {displayNames};
+    })();
+
     function createPlayer(name, team) {
         const getName = () => name;
         const getTeam = () => team;
@@ -57,8 +66,9 @@ const gameMaster = (function () {
     }
 
     const players = [];
-    players.push(createPlayer(prompt("Input Player 1 Name", "Mario"), "X"));
-    players.push(createPlayer(prompt("Input Player 2 Name", "Luigi"), "O"));
+    players.push(createPlayer(prompt("Input Player 1 (Team X) Name", "Mario"), "X"));
+    players.push(createPlayer(prompt("Input Player 2 (Team O) Name", "Luigi"), "O"));
+    displayController.displayNames();
 
     function displayScores() {
         alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
