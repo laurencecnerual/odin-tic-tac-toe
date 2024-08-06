@@ -57,7 +57,20 @@ const gameMaster = (function () {
             document.querySelector("#p2 > .player-score").textContent = "Score: " + players[1].getScore();
         }
 
-        return {displayNames, displayScores};
+        const displayBoard = () => {
+            const currentBoard = gameBoard.getBoard();
+            document.querySelector("#c0-0").textContent = currentBoard[0][0];
+            document.querySelector("#c0-1").textContent = currentBoard[0][1];
+            document.querySelector("#c0-2").textContent = currentBoard[0][2];
+            document.querySelector("#c1-0").textContent = currentBoard[1][0];
+            document.querySelector("#c1-1").textContent = currentBoard[1][1];
+            document.querySelector("#c1-2").textContent = currentBoard[1][2];
+            document.querySelector("#c2-0").textContent = currentBoard[2][0];
+            document.querySelector("#c2-1").textContent = currentBoard[2][1];
+            document.querySelector("#c2-2").textContent = currentBoard[2][2];
+        }
+
+        return {displayNames, displayScores, displayBoard};
     })();
 
     function createPlayer(name, team) {
@@ -74,10 +87,6 @@ const gameMaster = (function () {
     players.push(createPlayer(prompt("Input Player 1 (Team X) Name", "Mario"), "X"));
     players.push(createPlayer(prompt("Input Player 2 (Team O) Name", "Luigi"), "O"));
     displayController.displayNames();
-
-    // function displayScores() {
-    //     alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
-    // }
     
     function determineActivePlayerIndex() {
         let turnNumber = 0;
@@ -129,7 +138,8 @@ const gameMaster = (function () {
         let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
 
         if (fillCoordinates != undefined) {
-            gameBoard.logBoard();
+            gameBoard.logBoard(); // needs to be removed later
+            displayController.displayBoard();
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
         } else {
             alert("That cell is taken. Please try again.");
