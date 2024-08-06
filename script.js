@@ -3,13 +3,14 @@ const gameMaster = (function () {
         const tttSize = 3;
         let board;
         let cellsFilled;
+        let emptyCell = "";
 
         const cleanBoard = () => {
             board = [];
             for (let x = 0; x < tttSize; x++) {
                 board[x] = [];
                 for (let y = 0; y < tttSize; y++) {
-                    board[x][y] = "";
+                    board[x][y] = emptyCell;
                 }
             }
             cellsFilled = 0;
@@ -18,7 +19,7 @@ const gameMaster = (function () {
         cleanBoard();
 
         const fillCell = (x, y, value) => {
-            if (board[x][y] == "") {
+            if (board[x][y] == emptyCell) {
                 board[x][y] = value;
                 cellsFilled++;
                 return {x, y}; //succeeded in filling cell because it was empty
@@ -39,14 +40,34 @@ const gameMaster = (function () {
             return cellsFilled;
         }
 
-        const logBoard = () => {
-            alert(board[0] + "\n" + board[1] + "\n" + board[2] + "\n");
+        const getCellIsBlank = (r, c) => {
+            return board[r][c] == emptyCell ? true : false;
         }
 
-        return {getBoard, getMaxCells, getCellsFilled, cleanBoard, fillCell, logBoard};
+        const getCellValue = (r, c) => {
+            return board[r][c];
+        }
+
+        return {getBoard, getMaxCells, getCellsFilled, cleanBoard, fillCell, getCellIsBlank, getCellValue};
     })();
 
     const displayController = (function () {
+        const boardCells = Array.from(document.querySelectorAll("button.cell"));
+        boardCells.forEach((cell) => {
+            let id = cell.id;
+            let activeCell = document.querySelector("#" + id);
+            cell.addEventListener("mouseover", () => {
+                if (gameBoard.getCellIsBlank(id[1], id[3])) {
+                    activeCell.textContent = gamePiece;
+                    activeCell.style.color = "red";
+                }
+            });
+            cell.addEventListener("mouseout", () => {
+                activeCell.textContent = gameBoard.getCellValue(id[1], id[3]); // //send the row and column information from the button's id
+                activeCell.style.color = "black";
+            });
+        });
+
         const displayNames = () => {
             document.querySelector("#p1 > .player-name").textContent = players[0].getName();
             document.querySelector("#p2 > .player-name").textContent = players[1].getName();
@@ -57,17 +78,10 @@ const gameMaster = (function () {
             document.querySelector("#p2 > .player-score").textContent = "Score: " + players[1].getScore();
         }
 
-        const displayBoard = () => {
-            const currentBoard = gameBoard.getBoard();
-            document.querySelector("#c0-0").textContent = currentBoard[0][0];
-            document.querySelector("#c0-1").textContent = currentBoard[0][1];
-            document.querySelector("#c0-2").textContent = currentBoard[0][2];
-            document.querySelector("#c1-0").textContent = currentBoard[1][0];
-            document.querySelector("#c1-1").textContent = currentBoard[1][1];
-            document.querySelector("#c1-2").textContent = currentBoard[1][2];
-            document.querySelector("#c2-0").textContent = currentBoard[2][0];
-            document.querySelector("#c2-1").textContent = currentBoard[2][1];
-            document.querySelector("#c2-2").textContent = currentBoard[2][2];
+        const displayBoard = (r, c) => {
+            let updatedCell = document.querySelector(`#c${r}-${c}`);
+            updatedCell.textContent = gameBoard.getCellValue(r, c);
+            updatedCell.style.color = "black";
         }
 
         const displayTurn = (i) => {
@@ -157,7 +171,7 @@ const gameMaster = (function () {
         let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
 
         if (fillCoordinates != undefined) {
-            displayController.displayBoard();
+            displayController.displayBoard(row, column);
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
             setPlayerTurn(); // newly added
         } else {
@@ -175,7 +189,6 @@ const gameMaster = (function () {
         currentPlayer = players[index];
         currentPlayerName = currentPlayer.getName();
         gamePiece = currentPlayer.getTeam();
-        //alert(currentPlayerName + "'s turn");
         displayController.displayTurn(index);
     }
 
