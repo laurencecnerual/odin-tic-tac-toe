@@ -52,7 +52,12 @@ const gameMaster = (function () {
             document.querySelector("#p2 > .player-name").textContent = players[1].getName();
         }
 
-        return {displayNames};
+        const displayScores = () => {
+            document.querySelector("#p1 > .player-score").textContent = "Score: " + players[0].getScore();
+            document.querySelector("#p2 > .player-score").textContent = "Score: " + players[1].getScore();
+        }
+
+        return {displayNames, displayScores};
     })();
 
     function createPlayer(name, team) {
@@ -70,9 +75,9 @@ const gameMaster = (function () {
     players.push(createPlayer(prompt("Input Player 2 (Team O) Name", "Luigi"), "O"));
     displayController.displayNames();
 
-    function displayScores() {
-        alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
-    }
+    // function displayScores() {
+    //     alert(`${players[0].getName()}: ${players[0].getScore()} point(s) \nvs. \n${players[1].getName()}: ${players[1].getScore()} point(s)`);
+    // }
     
     function determineActivePlayerIndex() {
         let turnNumber = 0;
@@ -153,7 +158,7 @@ const gameMaster = (function () {
             alert("It's a draw!");
         }
     
-        displayScores();
+        displayController.displayScores();
 
         if (window.confirm("Would you like to play again?")) {
             cleanUp();
