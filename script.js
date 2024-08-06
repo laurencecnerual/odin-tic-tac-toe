@@ -175,6 +175,9 @@ const gameMaster = (function () {
         if (fillCoordinates != undefined) {
             displayController.displayBoard(row, column);
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
+            if (gameOver > 0) {
+                displayResults();
+            }
             setPlayerTurn();
         } else {
             alert("That cell is taken. Please try again.");
