@@ -79,10 +79,23 @@ const gameMaster = (function () {
             document.querySelector("#p2 > .player-score").textContent = "Score: " + players[1].getScore();
         }
 
-        const displayBoard = (r, c) => {
+        const updateBoard = (r, c) => {
             let updatedCell = document.querySelector(`#c${r}-${c}`);
             updatedCell.textContent = gameBoard.getCellValue(r, c);
             updatedCell.style.color = "black";
+        }
+
+        const displayFullBoard = () => {
+            const currentBoard = gameBoard.getBoard();
+            document.querySelector("#c0-0").textContent = currentBoard[0][0];
+            document.querySelector("#c0-1").textContent = currentBoard[0][1];
+            document.querySelector("#c0-2").textContent = currentBoard[0][2];
+            document.querySelector("#c1-0").textContent = currentBoard[1][0];
+            document.querySelector("#c1-1").textContent = currentBoard[1][1];
+            document.querySelector("#c1-2").textContent = currentBoard[1][2];
+            document.querySelector("#c2-0").textContent = currentBoard[2][0];
+            document.querySelector("#c2-1").textContent = currentBoard[2][1];
+            document.querySelector("#c2-2").textContent = currentBoard[2][2];
         }
 
         const displayTurn = (i) => {
@@ -96,7 +109,7 @@ const gameMaster = (function () {
             }
         }
 
-        return {displayNames, displayScores, displayBoard, displayTurn};
+        return {displayNames, displayScores, updateBoard, displayFullBoard, displayTurn};
     })();
 
     function createPlayer(name, team) {
@@ -168,13 +181,18 @@ const gameMaster = (function () {
         });
     });
 
+    const playAgainButton = document.querySelector("button.play-again");
+    playAgainButton.addEventListener("click", () => {
+        cleanUp();
+    });
+
     function playRound(r, c) {
         let row = parseInt(r);
         let column = parseInt(c);
         let fillCoordinates = gameBoard.fillCell(row, column, gamePiece);
 
         if (fillCoordinates != undefined) {
-            displayController.displayBoard(row, column);
+            displayController.updateBoard(row, column);
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
             if (gameOver > 0) {
                 displayResults();
@@ -188,6 +206,7 @@ const gameMaster = (function () {
     function cleanUp() {
         gameOver = 0;
         gameBoard.cleanBoard();
+        displayController.displayFullBoard();
     }
 
     function setPlayerTurn() {
