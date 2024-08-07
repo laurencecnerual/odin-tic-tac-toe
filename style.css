@@ -5,6 +5,7 @@ body {
     justify-content: space-around;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1.5rem;
+    background-color: rgba(0, 255, 255,0.3);
 }
 
 header {
@@ -37,7 +38,12 @@ div.banner-info {
 nav.setup {
     display: flex;
     justify-content: center;
-    gap: 5px;
+    gap: 25px;
+}
+
+nav > button {
+    padding: 5px 15px;
+    font-size: 1.3rem;
 }
 
 main.board {
