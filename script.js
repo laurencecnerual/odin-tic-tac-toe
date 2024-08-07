@@ -183,7 +183,9 @@ const gameMaster = (function () {
 
     const playAgainButton = document.querySelector("button.play-again");
     playAgainButton.addEventListener("click", () => {
-        cleanUp();
+        if (window.confirm("This will reset the board, keeping your current scores.\nAre you sure you want to continue?")) {
+            cleanUp();
+        }
     });
 
     const clearAllButton = document.querySelector("button.clear-all");
