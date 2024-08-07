@@ -186,6 +186,13 @@ const gameMaster = (function () {
         cleanUp();
     });
 
+    const clearAllButton = document.querySelector("button.clear-all");
+    clearAllButton.addEventListener("click", () => {
+        if (window.confirm("This will reset all game data, including player names.\nAre you sure you want to continue?")) {
+            location.reload();
+        }
+    });
+
     function playRound(r, c) {
         let row = parseInt(r);
         let column = parseInt(c);
