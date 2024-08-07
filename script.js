@@ -109,7 +109,11 @@ const gameMaster = (function () {
             }
         }
 
-        return {displayNames, displayScores, updateBoard, displayFullBoard, displayTurn};
+        const displayOutcome = (textToDisplay) => {
+            document.querySelector("div.banner-info").textContent = textToDisplay;
+        }
+
+        return {displayNames, displayScores, updateBoard, displayFullBoard, displayTurn, displayOutcome};
     })();
 
     function createPlayer(name, team) {
@@ -204,7 +208,7 @@ const gameMaster = (function () {
             displayController.updateBoard(row, column);
             gameOver = getGameOver(gamePiece, fillCoordinates.x, fillCoordinates.y);
             if (gameOver > 0) {
-                displayResults();
+                notifyGameOver();
             }
             setPlayerTurn();
         } else {
@@ -216,6 +220,7 @@ const gameMaster = (function () {
         gameOver = 0;
         gameBoard.cleanBoard();
         displayController.displayFullBoard();
+        displayController.displayOutcome("Let the games continue!");
     }
 
     function setPlayerTurn() {
@@ -226,23 +231,14 @@ const gameMaster = (function () {
         displayController.displayTurn(index);
     }
 
-    function displayResults() {
+    function notifyGameOver() {
         if (gameOver == 2) {
-            alert(`${currentPlayerName} (Team ${gamePiece}) wins!`);
+            displayController.displayOutcome(`${currentPlayerName} (Team ${gamePiece}) wins!`);
             currentPlayer.incrementScore();
         } else {
-            alert("It's a draw!");
+            displayController.displayOutcome("It's a draw!");
         }
     
         displayController.displayScores();
     }
-
-    // function promptPlayAgain() {
-    //     if (window.confirm("Would you like to play again?")) {
-    //         cleanUp();
-    //         playGame();
-    //     } else {
-    //         alert("Thank you for playing!");
-    //     }
-    // }
 })();
