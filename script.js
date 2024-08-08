@@ -59,7 +59,7 @@ const gameMaster = (function () {
             cell.addEventListener("mouseover", () => {
                 if (gameOver == 0 && gameBoard.getCellIsBlank(id[1], id[3])) {
                     activeCell.textContent = gamePiece;
-                    activeCell.style.color = "red";
+                    activeCell.style.color = "blue";
                 }
             });
             cell.addEventListener("mouseout", () => {
