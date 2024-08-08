@@ -16,8 +16,13 @@ header {
 
 div.player {
     color: white;
+    font-weight: bold;
     padding: 8px;
     border-radius: 5px;
+    text-underline-offset: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 div#p1 {

@@ -100,11 +100,11 @@ const gameMaster = (function () {
 
         const displayTurn = (i) => {
             if (i == 0) {
-                document.querySelector("#p1").style.fontWeight = "bold";
-                document.querySelector("#p2").style.fontWeight = "normal";
+                document.querySelector("#p1 > .player-name").style.textDecoration = "underline yellow";
+                document.querySelector("#p2 > .player-name").style.textDecoration = "none";
             } else {
-                document.querySelector("#p2").style.fontWeight = "bold";
-                document.querySelector("#p1").style.fontWeight = "normal";
+                document.querySelector("#p2 > .player-name").style.textDecoration = "underline yellow";
+                document.querySelector("#p1 > .player-name").style.textDecoration = "none";
 
             }
         }
