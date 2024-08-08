@@ -127,8 +127,21 @@ const gameMaster = (function () {
     }
 
     const players = [];
-    players.push(createPlayer(prompt("Input Player 1 (Team X) Name", "Mario"), "X"));
-    players.push(createPlayer(prompt("Input Player 2 (Team O) Name", "Luigi"), "O"));
+
+    let playerName1 = prompt("Input Player 1 (Team X) Name", "Mario");
+    if (playerName1) {
+        players.push(createPlayer(playerName1, "X"));
+    } else {
+        players.push(createPlayer("Player 1", "X"));
+    }
+    
+    let playerName2 = prompt("Input Player 2 (Team O) Name", "Luigi");
+    if (playerName2) {
+        players.push(createPlayer(playerName2, "O"));
+    } else {
+        players.push(createPlayer("Player 2", "O"));
+    }
+
     displayController.displayNames();
     
     function determineActivePlayerIndex() {
